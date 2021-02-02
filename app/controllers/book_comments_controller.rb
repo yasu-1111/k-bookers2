@@ -4,8 +4,16 @@ class BookCommentsController < ApplicationController
     book = Book.find(params[:book_id])
     comment = current_user.book_comments.new(book_comment_params)
     comment.book_id = book.id
-    comment.save
-    redirect_to book_path(book.id)
+    if comment.save
+       redirect_to book_path(book.id)
+    else
+       @error_comment = comment
+       @book = Book.find(params[:book_id])
+       @book_comment = BookComment.new
+       @user = current_user
+       @book_comments = BookComment.page(params[:page]).reverse_order
+       render 'books/show'
+    end
   end
 
   def destroy

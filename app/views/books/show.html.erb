@@ -1,3 +1,12 @@
+<div class="text-danger">
+<% if @error_comment.present? %>
+  <h2><%= @error_comment.errors.count %>errors prohibited this obj from being saved:</h2>
+  <% @error_comment.errors.full_messages.each do |message| %>
+    ・<%= message %>
+  <% end %>
+<% end %>
+</div>
+
 <div class="container">
  <div class="row">
   <div class="col-md-3">
