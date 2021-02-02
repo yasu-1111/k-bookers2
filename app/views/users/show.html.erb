@@ -5,7 +5,18 @@
       <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg", size:'100x100' %>
       <p>name <%= @user.name %></p>
       <p>introduction <%= @user.introduction %></p>
-      <%= link_to icon("fas", "user-cog"), edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-sm w-100' %>
+      <span><%= link_to icon("fas", "user-cog"), edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-sm w-100' %></span>
+      <p>follows <%= link_to @user.follower.count, followings_user_path(@user.id) %></p>
+      <p>followers <%= link_to @user.followed.count, followers_user_path(@user.id) %></p>
+      <span>
+        <% unless @user == current_user %>
+          <% if current_user.following?(@user) %>
+            <%= link_to "フォロー外す", unfollow_path(@user.id), method: :post, class: 'btn btn-success' %>
+        <% else %>
+            <%= link_to "フォローする", follow_path(@user.id), method: :post, class: 'btn btn-info' %>
+          <% end %>
+        <% end %>
+      </span>
 
       <h1>New book</h1>
       <%= form_with model: @book, local: true do |f| %>

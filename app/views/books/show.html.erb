@@ -11,10 +11,19 @@
  <div class="row">
   <div class="col-md-3">
     <h1>User info</h1>
-    <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg", size:'100x100' %>
-    <p>name <%= @user.name %></p>
-    <p>introduction <%= @user.introduction %></p>
-    <%= link_to icon("fas", "user-cog"), edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-sm w-100' %>
+    <%= attachment_image_tag @book.user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg", size:'100x100' %>
+    <p>name <%= @book.user.name %></p>
+    <p>introduction <%= @book.user.introduction %></p>
+    <span><%= link_to icon("fas", "user-cog"), edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-sm w-100' %></span>
+    <span>
+    <% unless @book.user == current_user %>
+      <% if current_user.following?(@book.user) %>
+        <%= link_to "フォロー外す", unfollow_path(@book.user.id), method: :post, class: 'btn btn-success' %>
+      <% else %>
+        <%= link_to "フォローする", follow_path(@book.user.id), method: :post, class: 'btn btn-info' %>
+      <% end %>
+    <% end %>
+    </span>
 
     <h1>New book</h1>
     <%= form_with model: @book_new, local: true do |f| %>
