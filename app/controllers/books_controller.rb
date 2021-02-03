@@ -4,7 +4,6 @@ class BooksController < ApplicationController
 
   def index
     @books = Book.all
-    @books = @books.where('title LIKE ?', "%#{params[:search]}%") if params[:search].present?
     @book = Book.new
     @user = current_user
   end
