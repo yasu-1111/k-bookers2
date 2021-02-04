@@ -1,0 +1,4 @@
+<%= form_with model:[book, book_comment], data: {remote: true } do |f| %>
+  <%= f.text_area :comment %>
+  <%= f.submit "投稿する" %>
+<% end %>
