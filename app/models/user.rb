@@ -16,6 +16,9 @@ class User < ApplicationRecord
   has_many :followed, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
   has_many :following_user, through: :follower, source: :followed
   has_many :follower_user, through: :followed, source: :follower
+  has_many :user_rooms
+  has_many :chats
+  has_many :rooms, through: :user_rooms
 
   def follow(user_id)
     follower.create(followed_id: user_id)
@@ -43,6 +46,23 @@ class User < ApplicationRecord
                   User.all
           end
       end
+  end
+
+  include JpPrefecture
+  jp_prefecture :prefecture_code
+
+  def prefecture_name
+    JpPrefecture::Prefecture.find(code: prefecture_code).try(:name)
+  end
+
+  def prefecture_name=(prefecture_name)
+    self.prefecture_code = JpPrefecture::Prefecture.find(name: prefecture_name).code
+  end
+
+  after_create :send_welcome_mail
+
+  def send_welcome_mail
+    UserNotifierMailer.send_signup_email(self).deliver
   end
 
 end

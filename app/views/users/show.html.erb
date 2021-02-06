@@ -5,6 +5,9 @@
       <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg", size:'100x100' %>
       <p>name <%= @user.name %></p>
       <p>introduction <%= @user.introduction %></p>
+      <% if current_user != @user %>
+        <%= link_to 'チャットする', chat_path(@user.id) %>
+      <% end %>
       <span><%= link_to icon("fas", "user-cog"), edit_user_path(@user.id), class: 'btn btn-outline-secondary btn-sm w-100' %></span>
       <p>follows <%= link_to @user.follower.count, followings_user_path(@user.id) %></p>
       <p>followers <%= link_to @user.followed.count, followers_user_path(@user.id) %></p>
